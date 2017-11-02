@@ -1,9 +1,9 @@
 
-const createHashHistory = require('history/createHashHistory');
-const createBrowserHistory = require('history/createBrowserHistory');
-const pathToRegexp = require('path-to-regexp');
-const qs = require('query-string');
-const equal = require('deep-equal');
+import createHashHistory from 'history/createHashHistory';
+import createBrowserHistory from 'history/createBrowserHistory';
+import pathToRegexp from 'path-to-regexp';
+import qs from 'query-string';
+import equal from 'deep-equal';
 
 function omit(obj, ...toOmit) {
   const clone = {};
@@ -125,14 +125,17 @@ class Router {
   }
   /**
    * Navigates to a desired url in the browser's history
-   * @param {String} url - URL to navigate to
-   * @param {Boolean} [keepQuery=false] - If true, keeps the current query string present in the URL
+   * @param {String} url - URL to navigate to.
+   * @param {Object|String} query - Either query string or query object to be applied to URL.
+   * @param {Boolean} [merge=false] - If true, attempts to merge the new query.
    * @memberof Router
    */
-  navigate(url, keepQuery = false) {
+  navigate(url, query, merge = false) {
     if (!url) throw new Error('No url was provided when navigate was called on this instance of Router.');
     let urlToPush = url;
-    if (keepQuery) urlToPush += this.history.location.search;
+    const incomingQuery = typeof query === 'string' ? qs.parse(query) : query;
+    const strQuery = qs.stringify(merge ? Object.assign({}, qs.parse(this.history.location.search), incomingQuery) : incomingQuery);
+    if (strQuery) urlToPush += `?${strQuery}`;
     this.history.push(urlToPush);
   }
   /**
@@ -143,13 +146,10 @@ class Router {
    */
   appendQuery(query, merge = false) {
     if (!query) throw new Error('No query string or object was provided when appendQuery was called on this instance of Router.');
-    const existingQuery = qs.parse(this.history.location.search);
-    const incomingQueryObj = typeof query === 'string' ? qs.parse(query) : query;
-    const querified = qs.stringify(merge ? Object.assign({}, existingQuery, incomingQueryObj) : incomingQueryObj);
-    this.navigate(`${this.history.location.pathname}?${querified}`);
+    this.navigate(this.history.location.pathname, query, merge);
   }
 }
 
 const singletonRouter = new Router();
 
-module.exports = singletonRouter;
+export default singletonRouter;

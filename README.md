@@ -64,13 +64,14 @@ router.init({
         - See the [history](https://www.npmjs.com/package/history) package for information on these two history types.
 - `start()`
   - Activates the router so that it can start responding to history / url changes. Fires off an initial URL change event when called, which will attempt to capture and match the current URL route present when `start()` is called.
-- `navigate(url, keepQuery = false)`
+- `navigate(url, query, merge = false)`
   - Creates a new history entry, updates the browser's current URL, and attempts to execute a matching route. Function accepts two parameters:
     - `url` - `String`
       - URL to set as current
-    - `keepQuery` - `Boolean` - Defaults to `false`
-      - If `true`, keeps the current queryString and applies it to the `url` you've provided.
-        - NOTE: There is currently a bug with this, so use sparingly until it is patched.
+    - `query` - `String` or `Object`
+      - Either query string or query object to append to the URL you've provided.
+    - `merge` - `Boolean` - Defaults to `false`
+      - If `true`, attempts to merge the incoming query with the current query present in the browser's URL.
 - `appendQuery(query, merge = false)`
   - Appends a new query string to the current URL. Accepts two parameters:
     - `query` - `Object`

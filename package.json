@@ -1,16 +1,12 @@
 {
   "name": "yabr",
-  "version": "0.9.1",
+  "version": "1.0.0",
   "description": "Yet Another Browser Router, or YABR for short. For those that want a simple, easy-to-understand client-side URL router.",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "webpack --env.production",
     "prepublish": "npm run build"
   },
-  "files": [
-    "index.js",
-    "dist/yabr.js"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/benduran/yetanotherbrowserrouter.git"
@@ -34,16 +30,18 @@
     "url": "https://github.com/benduran/yetanotherbrowserrouter/issues"
   },
   "homepage": "https://github.com/benduran/yetanotherbrowserrouter#readme",
-  "dependencies": {
-    "deep-equal": "^1.0.1",
-    "history": "^4.7.2",
-    "path-to-regexp": "^2.1.0",
-    "query-string": "^5.0.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
+    "deep-equal": "^1.0.1",
+    "eslint": "^4.10.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "history": "^4.7.2",
+    "path-to-regexp": "^2.1.0",
+    "query-string": "^5.0.1",
     "webpack": "^3.8.1"
   }
 }

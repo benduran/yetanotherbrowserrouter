@@ -1,0 +1,22 @@
+extends: airbnb-base
+env:
+  node: true
+  browser: true
+  es6: true
+rules:
+  linebreak-style:
+    - off
+  import/no-extraneous-dependencies:
+    - off
+  max-len:
+    - error
+    - 200
+  no-underscore-dangle:
+    - off
+  no-plusplus:
+    - error
+    - allowForLoopAfterthoughts: true
+  class-methods-use-this:
+    - off
+  object-curly-newline:
+    - off
