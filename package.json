@@ -1,0 +1,38 @@
+{
+  "name": "yetanotherbrowserrouter",
+  "version": "1.0.0",
+  "description": "Yet Another Browser Router, or YABR for short. For those that want a simple, easy-to-understand client-side URL router.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benduran/yetanotherbrowserrouter.git"
+  },
+  "keywords": [
+    "Client",
+    "Browser",
+    "Router",
+    "React",
+    "Router",
+    "VueJS",
+    "Backbone",
+    "JavaScript",
+    "URL",
+    "HashHistory",
+    "BrowserHistory"
+  ],
+  "author": "Benjamin Duran <stratodyne@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/benduran/yetanotherbrowserrouter/issues"
+  },
+  "homepage": "https://github.com/benduran/yetanotherbrowserrouter#readme",
+  "dependencies": {
+    "deep-equal": "^1.0.1",
+    "history": "^4.7.2",
+    "path-to-regexp": "^2.1.0",
+    "query-string": "^5.0.1"
+  }
+}
