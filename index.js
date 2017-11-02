@@ -47,6 +47,12 @@ class Router {
      * @type {Object}
      */
     this.lastRoute = null;
+    /**
+     * Whether or not the router has been started and will begin listening to URL changes.
+     * @type {Boolean}
+     * @memberof Router
+     */
+    this.started = false;
   }
   /**
    * Initializes the router
@@ -94,32 +100,34 @@ class Router {
    */
   onUrlChange({ pathname, search }) {
     // Test against route regexes and see which one is currently matching
-    this.lastRoute = this.currentRoute;
-    let onEnter = null;
-    let found = false;
-    for (let i = 0; i < this.routes.length; i++) {
-      const routeObj = this.routes[i];
-      const matches = routeObj.regexp.exec(pathname);
-      if (matches && matches.length) {
-        found = true;
-        // Execute the onenter
-        const params = {};
-        for (let j = 1; j < matches.length; j++) {
-          params[routeObj.keys[j - 1].name] = matches[j];
+    if (this.started) {
+      this.lastRoute = this.currentRoute;
+      let onEnter = null;
+      let found = false;
+      for (let i = 0; i < this.routes.length; i++) {
+        const routeObj = this.routes[i];
+        const matches = routeObj.regexp.exec(pathname);
+        if (matches && matches.length) {
+          found = true;
+          // Execute the onenter
+          const params = {};
+          for (let j = 1; j < matches.length; j++) {
+            params[routeObj.keys[j - 1].name] = matches[j];
+          }
+          this.currentRoute = Object.assign({}, routeObj, { params });
+          onEnter = () => { routeObj.onEnter({ pathname, query: qs.parse(search), params, router: this }, ...routeObj.inject); };
+          break;
         }
-        this.currentRoute = Object.assign({}, routeObj, { params });
-        onEnter = () => { routeObj.onEnter({ pathname, query: qs.parse(search), params, router: this }, ...routeObj.inject); };
-        break;
       }
-    }
-    if (!found) this.currentRoute = null; // If we didn't find a match, blank out the current route because the URL still changed
-    const toOmit = ['inject', 'onEnter', 'onExit'];
-    const shouldExecute = !this.lastRoute || (this.lastRoute && !this.currentRoute) || !equal(omit(this.lastRoute, ...toOmit), omit(this.currentRoute, ...toOmit));
-    // Execute onexit for the last route, but only if the new route is different than the old one
-    if (shouldExecute && this.lastRoute && this.lastRoute.onExit) this.lastRoute.onExit({ router: this }, ...this.lastRoute.inject);
+      if (!found) this.currentRoute = null; // If we didn't find a match, blank out the current route because the URL still changed
+      const toOmit = ['inject', 'onEnter', 'onExit'];
+      const shouldExecute = !this.lastRoute || (this.lastRoute && !this.currentRoute) || !equal(omit(this.lastRoute, ...toOmit), omit(this.currentRoute, ...toOmit));
+      // Execute onexit for the last route, but only if the new route is different than the old one
+      if (shouldExecute && this.lastRoute && this.lastRoute.onExit) this.lastRoute.onExit({ router: this }, ...this.lastRoute.inject);
 
-    // Execute onenter if the current is different than the last route
-    if (shouldExecute && onEnter) onEnter();
+      // Execute onenter if the current is different than the last route
+      if (shouldExecute && onEnter) onEnter();
+    }
   }
   /**
    * Starts the router and triggers whichever route is active on startup (if a match is found)
@@ -127,6 +135,7 @@ class Router {
    */
   start() {
     // Navigate to whichever route is currently active in the URL to kick off everything
+    this.started = true;
     this.onUrlChange(this.history.location);
   }
   /**
