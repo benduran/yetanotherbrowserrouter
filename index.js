@@ -1,9 +1,9 @@
 
-const createHashHistory = require('history/createHashHistory');
-const createBrowserHistory = require('history/createBrowserHistory');
-const pathToRegexp = require('path-to-regexp');
-const qs = require('query-string');
-const equal = require('deep-equal');
+import createHashHistory from 'history/createHashHistory';
+import createBrowserHistory from 'history/createBrowserHistory';
+import pathToRegexp from 'path-to-regexp';
+import qs from 'query-string';
+import equal from 'deep-equal';
 
 function omit(obj, ...toOmit) {
   const clone = {};
@@ -151,4 +151,4 @@ class Router {
 
 const singletonRouter = new Router();
 
-module.exports = singletonRouter;
+export default singletonRouter;
