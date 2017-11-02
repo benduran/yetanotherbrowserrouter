@@ -41,6 +41,12 @@ class Router {
      * @type {Object}
      */
     this.currentRoute = null;
+    /**
+     * Route that was last executed before the current route because active.
+     * @memberof Router
+     * @type {Object}
+     */
+    this.lastRoute = null;
   }
   /**
    * Initializes the router
@@ -88,7 +94,7 @@ class Router {
    */
   onUrlChange({ pathname, search }) {
     // Test against route regexes and see which one is currently matching
-    const lastRoute = this.currentRoute;
+    this.lastRoute = this.currentRoute;
     let onEnter = null;
     let found = false;
     for (let i = 0; i < this.routes.length; i++) {
@@ -108,9 +114,9 @@ class Router {
     }
     if (!found) this.currentRoute = null; // If we didn't find a match, blank out the current route because the URL still changed
     const toOmit = ['inject', 'onEnter', 'onExit'];
-    const shouldExecute = !lastRoute || (lastRoute && !this.currentRoute) || !equal(omit(lastRoute, ...toOmit), omit(this.currentRoute, ...toOmit));
+    const shouldExecute = !this.lastRoute || (this.lastRoute && !this.currentRoute) || !equal(omit(this.lastRoute, ...toOmit), omit(this.currentRoute, ...toOmit));
     // Execute onexit for the last route, but only if the new route is different than the old one
-    if (shouldExecute && lastRoute && lastRoute.onExit) lastRoute.onExit({ router: this }, ...lastRoute.inject);
+    if (shouldExecute && this.lastRoute && this.lastRoute.onExit) this.lastRoute.onExit({ router: this }, ...this.lastRoute.inject);
 
     // Execute onenter if the current is different than the last route
     if (shouldExecute && onEnter) onEnter();
