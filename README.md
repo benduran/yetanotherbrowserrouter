@@ -41,11 +41,11 @@ router.init({
 - `init(routes, useBrowserHistory = false)`
   - Initializes the router.
   - **Params**
-    - `routes` - `Object` - Routes object, where the key is the route, in any format that is accepted by the [path-to-regexp](https://www.npmjs.com/package/path-to-regexp) format (which is famously used by [Express](https://expressjs.com/en/guide/routing.html). The value of the key-value pair is an object that accepts three properties:
+    - `routes` - `Object` - Routes object, where the key is the route, in any format that is accepted by the [path-to-regexp](https://www.npmjs.com/package/path-to-regexp) format (which is famously used by [Express](https://expressjs.com/en/guide/routing.html)). The value of the key-value pair is an object that accepts three properties:
       - `onEnter({ pathname, query, params, router }, ...injectedParams)`
-        - Function that is called when a route is entered. An object containing the current route `pathname`, `query` params object, route `params` object, and current instance of `router`. Optionally, additional injected params are provided to the function, if these have been configured via the `inject` property (listed below).
+        - Function that is called when a route is entered. An object containing the current route `pathname`, `query` object, route `params` object, and current instance of `router`. Optionally, additional injected params are provided to the function, if these have been configured via the `inject` property (listed below).
       - `onExit({ router }, ...injectedParams)`
-        - Function is called when a route has been left and a new route has taken over as the current route. An object containing the current instance of `router` is provided, as well as an optional additional injected set of params, if they've been configured with the `inject` property.
+        - Function is called when a route has been left and a new route has taken over as the current route. An object containing the current instance of `router` is provided, as well as an optional injected set of params, if they've been configured with the `inject` property.
       - `inject` - `Array`
         - An array of parameters that you want to become applied as params to the `onEnter` and `onExit` functions. Useful if you want to keep your routes definitions in a separate module for better organization. Helps to avoid monolithic, massive JS files containing a ton of application logic.
           - ```
