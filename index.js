@@ -53,17 +53,25 @@ class Router {
      * @memberof Router
      */
     this.started = false;
+    /**
+     * Fired whenever the URL is changed, regardles of whether or not there is a matching route defined.
+     * @type {Function}
+     * @memberof Router
+     */
+    this.onchange = null;
   }
   /**
    * Initializes the router
-   * @param {any} [routes={}] - Routes path to function dictionary
-   * @param {Boolean} [useBrowserHistory=false] - If true, uses the HTML5 browser history, rather than legacy hash history.
+   * @param {Object} [routes={}] - Routes path to function dictionary
+   * @param {Function} onchange - (Optional) - If provided, will be executed whenever the URL changes for any reason.
+   * @param {Boolean} [useBrowserHistory=false] - (Optional) If true, uses the HTML5 browser history, rather than legacy hash history.
    * @memberof Router
    */
-  init(routes = {}, useBrowserHistory = false) {
+  init(routes = {}, onchange, useBrowserHistory = false) {
     if (!routes) {
       throw new Error('No routes object was provided when initializing the router.');
     }
+    this.onchange = onchange;
     this.history = useBrowserHistory ? createBrowserHistory() : createHashHistory();
     this.history.listen(this.onUrlChange.bind(this));
     this.routes = this._processRoutes(routes);
@@ -101,6 +109,7 @@ class Router {
   onUrlChange({ pathname, search }) {
     // Test against route regexes and see which one is currently matching
     if (this.started) {
+      if (typeof this.onchange === 'function') this.onchange({ pathname, search });
       this.lastRoute = this.currentRoute;
       let onEnter = null;
       let found = false;

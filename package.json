@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "webpack --env.production",
-    "prepublish": "npm run build"
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -36,12 +36,12 @@
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
     "deep-equal": "^1.0.1",
-    "eslint": "^4.10.0",
+    "eslint": "^4.15.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",
     "history": "^4.7.2",
     "path-to-regexp": "^2.1.0",
     "query-string": "^5.0.1",
-    "webpack": "^3.8.1"
+    "webpack": "^3.10.0"
   }
 }

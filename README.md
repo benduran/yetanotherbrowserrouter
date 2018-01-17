@@ -38,7 +38,7 @@ router.init({
 ```
 
 ## API
-- `init(routes, useBrowserHistory = false)`
+- `init(routes, onchange, useBrowserHistory = false)`
   - Initializes the router.
   - **Params**
     - `routes` - `Object` - Routes object, where the key is the route, in any format that is accepted by the [path-to-regexp](https://www.npmjs.com/package/path-to-regexp) format (which is famously used by [Express](https://expressjs.com/en/guide/routing.html)). The value of the key-value pair is an object that accepts three properties:
@@ -49,7 +49,6 @@ router.init({
       - `inject` - `Array`
         - An array of parameters that you want to become applied as params to the `onEnter` and `onExit` functions. Useful if you want to keep your routes definitions in a separate module for better organization. Helps to avoid monolithic, massive JS files containing a ton of application logic.
           - ```
-
             router.init({
               '/user/:userId`: {
                 onEnter({ params }, db, config) {
@@ -59,6 +58,15 @@ router.init({
               },
             });
             ```
+    - `onchange` - `Function` - Defaults to `undefined`
+      - If a function is provided, it will be called whenever the URL changes in any way, regardless of whether
+      a matching route was found. Function will be executed with one `Object` as its argument, containing the `pathname` and `search` of the URL.
+      - ```
+        router.init({ /* my routes here */ }, ({ pathname, search }) => {
+          console.log(`URL path has changed to ${pathname}`);
+          console.log(`Query string is now ${search}`);
+        });
+        ```
     - `useBrowserHistory` - `Boolean` - Defaults to `false`
       - If set to `true`, uses the HTML5 Browser History API to handle the URL routing. Defaults to `false`, which causes Hash History to be used instead.
         - See the [history](https://www.npmjs.com/package/history) package for information on these two history types.
