@@ -172,6 +172,31 @@ class Router {
     if (!query) throw new Error('No query string or object was provided when appendQuery was called on this instance of Router.');
     this.navigate(this.history.location.pathname, query, merge);
   }
+  /**
+   * Updates a specific property in the current query string.
+   * @param {String} prop - Property in query string to update
+   * @param {any} val - Value to set
+   * @memberof Router
+   */
+  updatePropInQuery(prop, val) {
+    if (!prop) throw new Error('A property name must be provided to update query.');
+    if (val === undefined || val === null) throw new Error('An invalid query property was provided when updating prop in query.');
+    const q = qs.parse(this.history.location.search);
+    q[prop] = val;
+    this.appendQuery(q);
+  }
+  /**
+   * Removes a specific query parameter from the current URL's query
+   * and pushes a state update.
+   * @param {String} prop - Prop to remove from current URL query.
+   * @memberof Router
+   */
+  removePropFromQuery(prop) {
+    if (!prop) throw new Error('A property to remove from query was not provided.');
+    const q = qs.parse(this.history.location.search);
+    delete q[prop];
+    this.appendQuery(q);
+  }
 }
 
 const singletonRouter = new Router();
