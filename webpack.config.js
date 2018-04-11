@@ -1,12 +1,10 @@
 
 const path = require('path');
-const { optimize } = require('webpack');
 
-function webpack(env = {}) {
+function webpackConfig(env = {}) {
   const { production } = env;
-  const plugins = [];
-  if (production) plugins.push(new optimize.UglifyJsPlugin({ mangle: true, comments: false, compress: true }));
   const config = {
+    mode: production ? 'production' : 'development',
     entry: path.join(__dirname, 'index.js'),
     output: {
       library: 'yabr',
@@ -22,11 +20,7 @@ function webpack(env = {}) {
         use: [{
           loader: 'babel-loader',
           options: {
-            presets: [['env', {
-              targets: {
-                browsers: ['last 2 versions'],
-              }
-            }]],
+            presets: [['env', { targets: { browsers: ['last 2 versions'] } }]],
           },
         }],
       }],
@@ -34,9 +28,12 @@ function webpack(env = {}) {
     resolve: {
       extensions: ['.js'],
     },
-    plugins,
+    optimization: {
+      nodeEnv: production ? 'production' : 'development',
+      minimize: production,
+    },
   };
   return config;
 }
 
-module.exports = webpack;
+module.exports = webpackConfig;
