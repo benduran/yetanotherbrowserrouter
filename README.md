@@ -86,6 +86,13 @@ router.init({
       - Object containing key / values that will be serialized to the query string.
     - `merge` - `Boolean` - Defaults to `false`
       - If `true`, merges the `query` object you provide with the existing query string that is present in the current URL.
+- `updatePropInQuery(prop, val)`
+  - Updates a single property that is present in the current query string. If property does not already exist, it is added. Accepts two parameters:
+    - `prop` - `String` - String name of the query property to update
+    - `val` - `String` or `Number` - Value that will replace the current value
+  `removePropFromQuery(prop)`
+    - Removes a single property from the current query string. Accepts one parameter:
+      - `prop` - `String` - Property to be removed from the query string.
 
 ## License
 [MIT](https://opensource.org/licenses/MIT)
