@@ -139,13 +139,16 @@ class Router {
     }
   }
   /**
-   * Starts the router and triggers whichever route is active on startup (if a match is found)
+   * Starts the router and triggers whichever route is active on startup (if a match is found).
+   * If the router has already been started, this no-ops.
    * @memberof Router
    */
   start() {
-    // Navigate to whichever route is currently active in the URL to kick off everything
-    this.started = true;
-    this.onUrlChange(this.history.location);
+    if (!this.started) {
+      // Navigate to whichever route is currently active in the URL to kick off everything
+      this.started = true;
+      this.onUrlChange(this.history.location);
+    }
   }
   /**
    * Navigates to a desired url in the browser's history
